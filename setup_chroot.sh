@@ -72,23 +72,23 @@ build_chroot()
 
 	# blow away existing directories and recreate empty ones
 	echo -e "\n${COLOR_ON}Creating ${CHROOT_DIR}/${CHROOT_NAME}..."  
-	sudo rm -rf "${CHROOT_DIR}/${CHROOT_NAME}"
-	sudo mkdir -p "${CHROOT_DIR}/${CHROOT_NAME}"
+	rm -rf "${CHROOT_DIR}/${CHROOT_NAME}"
+	mkdir -p "${CHROOT_DIR}/${CHROOT_NAME}"
 
 	# Create our schroot .conf file
 	echo -e "\n${COLOR_ON}Creating /etc/schroot/chroot.d/${CHROOT_NAME}.conf...${COLOR_OFF}" 
-	printf "[${CHROOT_NAME}]\ndescription=Ubuntu 14.04 Trusty for ${pkg}\ndirectory=${CHROOT_DIR}/${CHROOT_NAME}\npersonality=${personality}\ngroups=sudo\nroot-groups=sudo\npreserve-environment=true\ntype=directory\n" | sudo tee /etc/schroot/chroot.d/${CHROOT_NAME}.conf
+	printf "[${CHROOT_NAME}]\ndescription=Ubuntu 14.04 Trusty for ${pkg}\ndirectory=${CHROOT_DIR}/${CHROOT_NAME}\npersonality=${personality}\ngroups=sudo\nroot-groups=sudo\npreserve-environment=true\ntype=directory\n" | tee /etc/schroot/chroot.d/${CHROOT_NAME}.conf
 
 	# Create our chroot
 	echo -e "\n${COLOR_ON}Bootstrap the chroot...${COLOR_OFF}" 
-	sudo -E debootstrap --arch=${pkg} --include=wget trusty ${CHROOT_DIR}/${CHROOT_NAME} http://archive.ubuntu.com/ubuntu/
+	debootstrap --arch=${pkg} --include=wget trusty ${CHROOT_DIR}/${CHROOT_NAME} http://archive.ubuntu.com/ubuntu/
 
 	# Copy over proxy settings from host machine
 	echo -e "\n${COLOR_ON}Adding proxy info to chroot (if set)...${COLOR_OFF}" 
-	env | grep -i "_proxy=" | grep -v PERSISTENT_HISTORY_LAST | xargs -i echo export {} | sudo tee ${CHROOT_DIR}/${CHROOT_NAME}/etc/profile.d/steamrtproj.sh
-	env | grep -i "_proxy=" | grep -v PERSISTENT_HISTORY_LAST | xargs -i echo export {} | sudo tee -a ${CHROOT_DIR}/${CHROOT_NAME}/etc/environment
-	sudo rm -rf "${CHROOT_DIR}/${CHROOT_NAME}/etc/apt/apt.conf"
-	if [ -f /etc/apt/apt.conf ]; then sudo cp "/etc/apt/apt.conf" "${CHROOT_DIR}/${CHROOT_NAME}/etc/apt"; fi  
+	env | grep -i "_proxy=" | grep -v PERSISTENT_HISTORY_LAST | xargs -i echo export {} | tee ${CHROOT_DIR}/${CHROOT_NAME}/etc/profile.d/steamrtproj.sh
+	env | grep -i "_proxy=" | grep -v PERSISTENT_HISTORY_LAST | xargs -i echo export {} | tee -a ${CHROOT_DIR}/${CHROOT_NAME}/etc/environment
+	rm -rf "${CHROOT_DIR}/${CHROOT_NAME}/etc/apt/apt.conf"
+	if [ -f /etc/apt/apt.conf ]; then cp "/etc/apt/apt.conf" "${CHROOT_DIR}/${CHROOT_NAME}/etc/apt"; fi  
 
 	echo -e "\n${COLOR_ON}Running ${SCRIPTNAME} ${BETA_ARG} --configure...${COLOR_OFF}" 
 
