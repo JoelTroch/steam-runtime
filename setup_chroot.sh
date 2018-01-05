@@ -156,6 +156,8 @@ deb http://us.archive.ubuntu.com/ubuntu trusty main
 deb-src http://us.archive.ubuntu.com/ubuntu trusty main
 deb http://us.archive.ubuntu.com/ubuntu trusty universe
 deb-src http://us.archive.ubuntu.com/ubuntu trusty universe
+deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu trusty main
+deb-src http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu trusty main
 heredoc
 ) > /etc/apt/sources.list
 
