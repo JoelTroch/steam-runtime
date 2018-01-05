@@ -19,35 +19,25 @@ prebuild_chroot()
 	# Check if there are any active schroot sessions right now and warn if so...
 	schroot_list=$(schroot --list --all-sessions | head -n 1)
 	if [ $schroot_list ]; then
-		tput setaf 3
 		echo -e "\nWARNING: Schroot says you have a currently active session!\n"
-		tput sgr0
 		echo "  ${schroot_list}"
 		echo ""
-		read -p "Are you sure you want to continue (y/n)? "
-		if [[ "$REPLY" != [Yy] ]]; then
-			echo -e "Cancelled...\n"
-			exit 1
-		fi
+		echo -e "Cancelled...\n"
+		exit 1
 	fi
 
 	STEAM_RUNTIME_SPEW_WARNING=
 	for var in "$@"; do
 		dirname="${CHROOT_DIR}/${CHROOT_PREFIX}${var/--/}"
 		if [ -d "${dirname}" ]; then
-			tput setaf 3
 			STEAM_RUNTIME_SPEW_WARNING=1
 			echo -e "About to remove ${dirname} and re-install..."
-			tput sgr0
 		fi
 	done
 
 	if [[ "$STEAM_RUNTIME_SPEW_WARNING" == "1" ]]; then
-		read -p "  This ok (y/n)? "
-		if [[ "$REPLY" != [Yy] ]]; then
-			echo -e "Cancelled...\n"
-			exit 1
-		fi
+		echo -e "Cancelled...\n"
+		exit 1
 	fi
 }
 
@@ -284,9 +274,7 @@ function cleanup()
 	echo "  PATH is \"$PATH\""
 	echo ""
 
-	tput setaf 3
 	echo "A command returned error. See the logfile: ${LOGFILE}"
-	tput sgr0
 }
 
 main()
