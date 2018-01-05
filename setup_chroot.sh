@@ -81,14 +81,14 @@ build_chroot()
 
 	# Create our schroot .conf file
 	echo -e "\n${COLOR_ON}Creating /etc/schroot/chroot.d/${CHROOT_NAME}.conf...${COLOR_OFF}" 
-	printf "[${CHROOT_NAME}]\ndescription=Ubuntu 12.04 Precise for ${pkg}\ndirectory=${CHROOT_DIR}/${CHROOT_NAME}\npersonality=${personality}\ngroups=sudo\nroot-groups=sudo\npreserve-environment=true\ntype=directory\n" | sudo tee /etc/schroot/chroot.d/${CHROOT_NAME}.conf
+	printf "[${CHROOT_NAME}]\ndescription=Ubuntu 14.04 Trusty for ${pkg}\ndirectory=${CHROOT_DIR}/${CHROOT_NAME}\npersonality=${personality}\ngroups=sudo\nroot-groups=sudo\npreserve-environment=true\ntype=directory\n" | sudo tee /etc/schroot/chroot.d/${CHROOT_NAME}.conf
 
 	# Add the Ubuntu GPG key to apt
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0x40976EAF437D05B5
 
 	# Create our chroot
 	echo -e "\n${COLOR_ON}Bootstrap the chroot...${COLOR_OFF}" 
-	sudo -E debootstrap --arch=${pkg} --include=wget precise ${CHROOT_DIR}/${CHROOT_NAME} http://archive.ubuntu.com/ubuntu/
+	sudo -E debootstrap --arch=${pkg} --include=wget trusty ${CHROOT_DIR}/${CHROOT_NAME} http://archive.ubuntu.com/ubuntu/
 
 	# Copy over proxy settings from host machine
 	echo -e "\n${COLOR_ON}Adding proxy info to chroot (if set)...${COLOR_OFF}" 
@@ -155,10 +155,10 @@ configure_chroot()
 	# Ubuntu repos
 	#
 	(cat << heredoc
-deb http://us.archive.ubuntu.com/ubuntu precise main
-deb-src http://us.archive.ubuntu.com/ubuntu precise main
-deb http://us.archive.ubuntu.com/ubuntu precise universe
-deb-src http://us.archive.ubuntu.com/ubuntu precise universe
+deb http://us.archive.ubuntu.com/ubuntu trusty main
+deb-src http://us.archive.ubuntu.com/ubuntu trusty main
+deb http://us.archive.ubuntu.com/ubuntu trusty universe
+deb-src http://us.archive.ubuntu.com/ubuntu trusty universe
 heredoc
 ) > /etc/apt/sources.list
 
@@ -243,7 +243,7 @@ heredoc
 ) | apt-key add -
 
     # Before installing any additional packages, neuter upstart.
-    # Otherwise on Ubuntu 12.04, when dbus is installed it starts
+    # Otherwise on Ubuntu 14.04, when dbus is installed it starts
     # a new dbus-daemon outside the chroot which locks files 
     # inside the chroot, preventing those directories from
     # getting unmounted when the chroot exits.
