@@ -150,51 +150,20 @@ heredoc
 
   apt-get install --force-yes -y install-info
   apt-get install --force-yes -y ubuntu-minimal pkg-config time wget
-  apt-get install --force-yes -y build-essential cmake gdb
+  apt-get install --force-yes -y build-essential gdb
 
   apt-get install --force-yes -y steamrt-dev
-  apt-get install --force-yes -y gcc-4.8 g++-4.8
-  apt-get install --force-yes -y clang-3.4 lldb-3.4
-  apt-get install --force-yes -y clang-3.6 lldb-3.6
-
-  # Workaround bug 714890 in 32-bit clang. Gcc 4.8 changed the include paths.
-  # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=714890
-  #   /usr/include/c++/4.6/i686-linux-gnu/bits/c++config.h
-  #   /usr/include/i386-linux-gnu/c++/4.8/bits/c++config.h
-  if [ -d /usr/include/i386-linux-gnu/c++/4.8 ]; then
-    ln -s /usr/include/i386-linux-gnu/c++/4.8 /usr/include/c++/4.8/i686-linux-gnu
-  fi
+  apt-get install --force-yes -y gcc-5 g++-5
 
   # Setup compiler alternatives
-  update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 50
-  update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.6 50
-  update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-4.6 50
-
-  update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100
-  update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 100
-  update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-4.8 100
-
-  if [ -x /usr/bin/g++-5 ]; then
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 50
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 50
-    update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-5 50
-  fi
-
-  update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-3.4 50
-  update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-3.4 50
-
-  update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-3.6 50
-  update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-3.6 50
-
-  if [ -x /usr/bin/clang++-3.8 ]; then
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-3.8 50
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-3.8 50
-  fi
+  update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 50
+  update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 50
+  update-alternatives --install /usr/bin/cpp cpp-bin /usr/bin/cpp-5 50
 
   # gcc-4.8 is the default
-  update-alternatives --set gcc /usr/bin/gcc-4.8
-  update-alternatives --set g++ /usr/bin/g++-4.8
-  update-alternatives --set cpp-bin /usr/bin/cpp-4.8
+  update-alternatives --set gcc /usr/bin/gcc-5
+  update-alternatives --set g++ /usr/bin/g++-5
+  update-alternatives --set cpp-bin /usr/bin/cpp-5
 
   # Allow members of sudo group sudo to run in runtime without password prompt
   echo -e "\\n${COLOR_ON}Allow members of sudo group to run sudo in runtime without prompting for password...${COLOR_OFF}"
